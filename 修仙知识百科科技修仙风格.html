@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙知识百科</title>
+    <link rel="icon" href="8CU2.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a0e17;
+            --secondary: #1a1f2e;
+            --accent: #00f0ff;
+            --accent-glow: rgba(0, 240, 255, 0.5);
+            --accent-dark: #0066cc;
+            --text: #e0f0ff;
+            --text-secondary: #a0b8d0;
+            --card-bg: rgba(20, 25, 40, 0.8);
+            --card-border: rgba(0, 240, 255, 0.2);
+            --neon-glow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow);
+            --font-tech: 'Orbitron', 'Segoe UI', sans-serif;
+            --font-normal: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--primary);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 100, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(150, 0, 255, 0.1) 0%, transparent 20%),
+                linear-gradient(180deg, var(--primary) 0%, #0d1220 100%);
+            color: var(--text);
+            font-family: var(--font-normal);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, transparent 49%, rgba(0, 240, 255, 0.03) 50%, transparent 51%),
+                linear-gradient(transparent 49%, rgba(0, 240, 255, 0.03) 50%, transparent 51%);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            text-shadow: var(--neon-glow);
+        }
+        
+        .logo-text h1 {
+            font-family: var(--font-tech);
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--accent), #a0f0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 5px;
+            background: rgba(20, 25, 40, 0.8);
+            border-radius: 12px;
+            padding: 8px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-tech);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn.active, .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent);
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+        
+        .nav-btn.active::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: var(--neon-glow);
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            background: rgba(20, 25, 40, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 25px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .main-content {
+            min-height: calc(100vh - 120px);
+            padding: 40px 0;
+        }
+        
+        .page-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page-container.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+        }
+        
+        .page-title h2 {
+            font-family: var(--font-tech);
+            font-size: 1.8rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-title h2 i {
+            font-size: 1.5rem;
+        }
+        
+        .featured-carousel {
+            margin-bottom: 50px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        .carousel-slide {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            position: relative;
+            height: 450px;
+        }
+        
+        .carousel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(10, 14, 23, 0.95), transparent);
+            padding: 40px;
+        }
+        
+        .carousel-overlay h3 {
+            font-family: var(--font-tech);
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+        
+        .carousel-overlay p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 14, 23, 0.7);
+            border: 1px solid var(--card-border);
+            color: var(--accent);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .prev-btn {
+            left: 20px;
+        }
+        
+        .next-btn {
+            right: 20px;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            transform: scale(1.2);
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.2);
+            border-color: var(--accent);
+        }
+        
+        .content-card:hover::before {
+            opacity: 1;
+        }
+        
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h3 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-family: var(--font-tech);
+            letter-spacing: 0.5px;
+        }
+        
+        .card-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .card-tag {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .page-btn {
+            background: rgba(20, 25, 40, 0.8);
+            border: 1px solid var(--card-border);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn:hover, .page-btn.active {
+            background: rgba(0, 240, 255, 0.2);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .page-btn.disabled:hover {
+            background: rgba(20, 25, 40, 0.8);
+            color: var(--text);
+            border-color: var(--card-border);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.3);
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-family: var(--font-tech);
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff5555;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-body p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        
+        footer {
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 30px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-menu {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .carousel-item {
+                height: 350px;
+            }
+            
+            .carousel-overlay h3 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .logo-text h1 {
+                font-size: 1.8rem;
+            }
+            
+            .carousel-item {
+                height: 300px;
+            }
+            
+            .carousel-overlay {
+                padding: 20px;
+            }
+            
+            .carousel-overlay h3 {
+                font-size: 1.5rem;
+            }
+            
+            .carousel-overlay p {
+                font-size: 1rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tech-bg"></div>
+    
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>修仙知识百科</h1>
+                    <p>探索修仙与科技的融合之道</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-page="home">
+                    <i class="fas fa-home"></i> 首页
+                </button>
+                <button class="nav-btn" data-page="materials">
+                    <i class="fas fa-tree"></i> 灵材百科
+                </button>
+                <button class="nav-btn" data-page="knowledge">
+                    <i class="fas fa-book"></i> 知识分类
+                </button>
+                <button class="nav-btn" data-page="era">
+                    <i class="fas fa-history"></i> 修仙纪元
+                </button>
+                <button class="nav-btn" data-page="industry">
+                    <i class="fas fa-industry"></i> 行业变革
+                </button>
+            </nav>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" id="search-input" placeholder="搜索修仙知识...">
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div id="home-page" class="page-container active">
+                <div class="page-title">
+                    <h2><i class="fas fa-home"></i> 修仙知识百科 - 首页</h2>
+                </div>
+                
+                <div class="featured-carousel">
+                    <div class="carousel-slide" id="carousel-slide">
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="玄檀苓木" class="carousel-img">
+                            <div class="carousel-overlay">
+                                <h3>玄檀苓木：抵抗法则之力的灵材</h3>
+                                <p>生命力浓郁的顶级灵木，可抵抗法则之力的冲击，是制作高阶修仙家具的理想材质。了解其特性、应用与鉴别方法。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="修仙纪元" class="carousel-img">
+                            <div class="carousel-overlay">
+                                <h3>修仙纪元：新时代的降临</h3>
+                                <p>随着灵力复苏，现代社会逐步进入修仙纪元。了解这一变革对社会结构、科技发展与日常生活的深刻影响。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="灵材行业" class="carousel-img">
+                            <div class="carousel-overlay">
+                                <h3>灵材革命：传统木材的淘汰</h3>
+                                <p>云山木、金丝楠木等旧时期名木为何被淘汰？探索灵材行业如何引领修仙纪元的材料革命。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-btn prev-btn" id="prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn" id="next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <div class="carousel-indicators" id="carousel-indicators">
+                        <div class="indicator active" data-index="0"></div>
+                        <div class="indicator" data-index="1"></div>
+                        <div class="indicator" data-index="2"></div>
+                    </div>
+                </div>
+                
+                <div class="page-title">
+                    <h2><i class="fas fa-star"></i> 精选内容</h2>
+                </div>
+                
+                <div class="cards-grid" id="home-cards"></div>
+            </div>
+            
+            <div id="materials-page" class="page-container">
+                <div class="page-title">
+                    <h2><i class="fas fa-tree"></i> 灵材百科</h2>
+                </div>
+                
+                <div class="cards-grid" id="materials-cards"></div>
+            </div>
+            
+            <div id="knowledge-page" class="page-container">
+                <div class="page-title">
+                    <h2><i class="fas fa-book"></i> 知识分类</h2>
+                </div>
+                
+                <div class="cards-grid" id="knowledge-cards"></div>
+            </div>
+            
+            <div id="era-page" class="page-container">
+                <div class="page-title">
+                    <h2><i class="fas fa-history"></i> 修仙纪元</h2>
+                </div>
+                
+                <div class="cards-grid" id="era-cards"></div>
+            </div>
+            
+            <div id="industry-page" class="page-container">
+                <div class="page-title">
+                    <h2><i class="fas fa-industry"></i> 行业变革</h2>
+                </div>
+                
+                <div class="cards-grid" id="industry-cards"></div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">详情标题</h2>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>修仙知识百科 &copy; 2026 - 科技修仙融合版 | 数据存储于本地浏览器</p>
+            <p>本页面为静态HTML文件，无需网络连接即可使用 | 设计理念：科技与修仙的完美融合</p>
+        </div>
+    </footer>
+
+    <script>
+        const knowledgeDatabase = {
+            materials: [
+                {
+                    id: 1,
+                    title: "玄檀苓木",
+                    description: "生命力浓郁的顶级灵木，可抵抗法则之力的冲击，是制作高阶修仙家具的理想材质。用特制工具可塑造成任意形态。",
+                    image: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["灵材", "家具", "抗法则", "顶级"],
+                    category: "materials",
+                    content: `<p><strong>玄檀苓木</strong>是修仙纪元最重要的灵材之一，以其独特的生命力和对法则之力的抗性而闻名。</p>
+                    <p>这种灵木主要生长在灵气浓郁的深山幽谷中，生长周期极长，通常需要数百年才能成材。其木质致密坚硬，纹理中蕴含着天然的道纹，能够有效抵消高阶修士释放的法则冲击。</p>
+                    <p>在修仙纪元之前，玄檀苓木并不为人所知。随着灵力复苏，这种木材的特殊性能才被逐渐发现。现在，它已成为制作修炼室家具、法宝外壳、以及灵力实验设备的首选材料。</p>
+                    <p>玄檀苓木的加工需要特殊的灵能工具，普通金属工具无法对其造成有效切割。加工后的玄檀苓木制品不仅外观典雅，更能辅助修炼者稳定心神，提高灵力吸收效率。</p>
+                    <p>由于资源稀缺，玄檀苓木的价格极为昂贵，通常只有高阶修士或大型宗门才能大量使用。市场上也出现了许多仿制品，购买时需要谨慎鉴别。</p>`
+                }
+            ],
+            knowledge: [
+                {
+                    id: 101,
+                    title: "修仙纪元",
+                    description: "现代社会逐步进入的新时代，随着灵力浓度上升，传统材料无法承受，催生了灵材行业的快速发展。",
+                    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["时代", "社会变革", "灵力"],
+                    category: "knowledge",
+                    content: `<p><strong>修仙纪元</strong>是指从2025年开始，全球范围内灵力逐渐复苏，人类社会逐步进入以修仙文明为主导的新时代。</p>
+                    <p>修仙纪元的到来并非一蹴而就。2023年，科学家首次检测到大气中"未知能量粒子"浓度异常上升。2024年，全球多地区出现"灵气喷发"现象，部分动植物开始发生变异。2025年，第一个成功引气入体的现代修士出现，标志着修仙纪元正式开启。</p>
+                    <p>修仙纪元的特征包括：全球灵力浓度持续上升、传统科学理论需要修正、修仙者数量快速增长、修仙科技与传统科技融合等。这一时期，人类社会正经历着自工业革命以来最深刻的变革。</p>
+                    <p>随着灵力浓度上升，许多传统材料和技术逐渐失效。建筑、交通、通信等基础设施都需要进行"灵力适应性改造"。同时，新的灵材、灵能技术和修仙科学不断涌现。</p>
+                    <p>目前，修仙纪元仍处于早期阶段，全球各国正在积极探索适应新时代的社会制度、经济模式和国际关系。修仙者与普通人的关系、修仙资源的分配等问题也成为社会关注的焦点。</p>`
+                }
+            ],
+            era: [
+                {
+                    id: 201,
+                    title: "灵力复苏现象",
+                    description: "全球范围内灵气浓度逐渐升高的自然现象，是修仙纪元开启的根本原因。",
+                    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["灵力", "复苏", "现象"],
+                    category: "era",
+                    content: `<p><strong>灵力复苏现象</strong>是指从2023年开始，全球范围内灵气浓度逐渐升高的自然现象，这一现象彻底改变了地球的物理规律和生物进化路径。</p>
+                    <p>灵力复苏的具体表现包括：空气中出现可检测的"灵力粒子"、部分地区的灵力浓度异常升高、动植物开始发生灵力适应性变异、传统材料在高灵力环境下失效等。</p>
+                    <p>科学家对灵力复苏的原因提出了多种假说，包括：地球轨道变化假说、太阳活动假说、地核变化假说、多维空间渗透假说等，但尚无定论。</p>
+                    <p>灵力复苏的速度正在加快。2023年，全球平均灵力浓度仅为0.1灵度/立方米；到2025年，已上升至0.8灵度/立方米；预计到2030年，将达到3.0灵度/立方米。</p>
+                    <p>不同地区的灵力浓度差异显著。通常，山区、森林、河流源头等自然环境保护较好的地区，灵力浓度较高；而工业区、城市中心等人为干扰严重的地区，灵力浓度较低。</p>`
+                }
+            ],
+            industry: [
+                {
+                    id: 301,
+                    title: "灵材行业革命",
+                    description: "传统木材行业向灵材行业的转型过程，催生了新的产业链和商业模式。",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["行业", "革命", "灵材"],
+                    category: "industry",
+                    content: `<p><strong>灵材行业革命</strong>是修仙纪元最显著的经济变革之一，传统材料产业在灵力冲击下崩溃，新型灵材产业迅速崛起。</p>
+                    <p>灵材行业革命始于2024年，当时全球多地报告建筑、家具、设备在高灵力环境下失效。调查发现，传统材料无法适应新的灵力环境，急需替代品。</p>
+                    <p>灵材行业的产业链包括：灵材勘探、灵材开采、灵材加工、灵材销售、灵材回收等环节。每个环节都需要专门的技术和设备，创造了大量就业机会。</p>
+                    <p>灵材行业的主要企业分为三类：传统材料企业转型（如转型生产灵能混凝土）、新兴灵材创业公司（专注于特定灵材开发）、修仙宗门产业（利用修仙技术生产高端灵材）。</p>
+                    <p>灵材行业革命也带来了新的商业模式，如灵材订阅服务、灵材共享经济、灵材定制化生产等。这些新模式正在改变传统的材料供应链。</p>`
+                }
+            ]
+        };
+
+        function setupPageNavigation() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const pageContainers = document.querySelectorAll('.page-container');
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const pageId = button.getAttribute('data-page');
+                    
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    pageContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+                    document.getElementById(`${pageId}-page`).classList.add('active');
+                    
+                    if (pageId === 'home') {
+                        if (!window.carouselInterval) {
+                            startCarousel();
+                        }
+                    } else {
+                        stopCarousel();
+                    }
+                    
+                    document.getElementById('search-input').value = '';
+                    
+                    renderPageCards(pageId);
+                });
+            });
+        }
+
+        function createCardHTML(item) {
+            return `
+                <div class="content-card" data-id="${item.id}" data-category="${item.category}">
+                    <img src="${item.image}" alt="${item.title}" class="card-img">
+                    <div class="card-content">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <div class="card-tags">
+                            ${item.tags.map(tag => `<span class="card-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPageCards(pageId) {
+            const containerId = `${pageId}-cards`;
+            const container = document.getElementById(containerId);
+            
+            if (!container) return;
+            
+            let data = [];
+            if (pageId === 'home') {
+                data = [
+                    knowledgeDatabase.materials[0],
+                    knowledgeDatabase.knowledge[0],
+                    knowledgeDatabase.era[0],
+                    knowledgeDatabase.industry[0]
+                ];
+            } else {
+                data = knowledgeDatabase[pageId] || [];
+            }
+            
+            container.innerHTML = data.map(item => createCardHTML(item)).join('');
+            
+            document.querySelectorAll(`#${containerId} .content-card`).forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    const category = this.getAttribute('data-category');
+                    const item = knowledgeDatabase[category]?.find(item => item.id === id);
+                    
+                    if (item) {
+                        showModal(item);
+                    }
+                });
+            });
+        }
+
+        let currentSlide = 0;
+        const totalSlides = 3;
+        let carouselInterval;
+        
+        function startCarousel() {
+            carouselInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function stopCarousel() {
+            clearInterval(carouselInterval);
+            window.carouselInterval = null;
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+        
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+        
+        function updateCarousel() {
+            const carouselSlide = document.getElementById('carousel-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            
+            carouselSlide.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        function showModal(item) {
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            
+            modalTitle.textContent = item.title;
+            modalBody.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        ${item.tags.map(tag => `<span style="background-color: rgba(0, 240, 255, 0.1); color: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(0, 240, 255, 0.3);">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                <div style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 20px;">
+                    ${item.content}
+                </div>
+                <div style="background: rgba(0, 240, 255, 0.05); border-left: 3px solid var(--accent); padding: 15px; border-radius: 0 8px 8px 0;">
+                    <p style="margin: 0; color: var(--accent); font-weight: bold;">ID: ${item.id} | 分类: ${getCategoryName(item.category)}</p>
+                </div>
+            `;
+            
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function getCategoryName(category) {
+            const categoryNames = {
+                materials: '灵材百科',
+                knowledge: '知识分类',
+                era: '修仙纪元',
+                industry: '行业变革'
+            };
+            return categoryNames[category] || '未知分类';
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('search-input');
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    const activePage = document.querySelector('.page-container.active').id.replace('-page', '');
+                    renderPageCards(activePage);
+                    return;
+                }
+                
+                const allItems = [
+                    ...knowledgeDatabase.materials,
+                    ...knowledgeDatabase.knowledge,
+                    ...knowledgeDatabase.era,
+                    ...knowledgeDatabase.industry
+                ];
+                
+                const searchResults = allItems.filter(item => 
+                    item.title.toLowerCase().includes(searchTerm) || 
+                    item.description.toLowerCase().includes(searchTerm) ||
+                    item.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                    item.content.toLowerCase().includes(searchTerm)
+                );
+                
+                const activePage = document.querySelector('.page-container.active');
+                const cardsContainer = activePage.querySelector('.cards-grid');
+                
+                if (cardsContainer) {
+                    if (searchResults.length > 0) {
+                        cardsContainer.innerHTML = searchResults.map(item => createCardHTML(item)).join('');
+                        
+                        document.querySelectorAll(`.content-card`).forEach(card => {
+                            card.addEventListener('click', function() {
+                                const id = parseInt(this.getAttribute('data-id'));
+                                const category = this.getAttribute('data-category');
+                                const item = knowledgeDatabase[category]?.find(item => item.id === id);
+                                
+                                if (item) {
+                                    showModal(item);
+                                }
+                            });
+                        });
+                    } else {
+                        cardsContainer.innerHTML = `
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                                <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; color: var(--accent);"></i>
+                                <h3 style="color: var(--accent); margin-bottom: 10px;">未找到相关结果</h3>
+                                <p>请尝试使用其他关键词搜索</p>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        function setupCarouselControls() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const indicators = document.querySelectorAll('.indicator');
+            
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopCarousel();
+                startCarousel();
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopCarousel();
+                startCarousel();
+            });
+            
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = parseInt(indicator.getAttribute('data-index'));
+                    updateCarousel();
+                    stopCarousel();
+                    startCarousel();
+                });
+            });
+        }
+
+        function setupModal() {
+            const modalOverlay = document.getElementById('modal-overlay');
+            const closeModal = document.getElementById('close-modal');
+            
+            closeModal.addEventListener('click', () => {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite alternate`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+                    100% { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupPageNavigation();
+            renderPageCards('home');
+            setupSearch();
+            setupCarouselControls();
+            setupModal();
+            createParticles();
+            startCarousel();
+            
+            setTimeout(() => {
+                console.log("修仙知识百科已加载完成！");
+            }, 500);
+        });
+    </script>
+</body>
+</html>
